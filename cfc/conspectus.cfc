@@ -32,7 +32,7 @@ This file is part of the HWS Weeding Manager.
         	<!--- strip off anything after class group -- otherwise e.g. TR183 won't match 'TR183 .M34' --->
 			<cfset arguments.normalized_lcclass = REReplace(arguments.normalized_lcclass, '^([^0-9]*[0-9]*).*$', '\1', 'ALL')>
         </cfif>
-        <cfquery name="conspectus" datasource="library">
+        <cfquery name="conspectus" datasource="#application.dsn.library#">
             SELECT
                 lc_range_ID,
                 NormalizedStartNum,

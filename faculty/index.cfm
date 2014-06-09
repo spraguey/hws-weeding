@@ -26,6 +26,7 @@ This file is part of the HWS Weeding Manager.
 		<p>Please contact your <a href='/liaisons.cfm'>liaison</a> to discuss the review process or to address any questions or concerns.</p>"
 	/>
 	<cfset title = "Collection Review">
+    <cfinclude template = "../config.cfm">
 </cfsilent>
 
 <cfinvoke

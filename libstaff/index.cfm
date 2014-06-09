@@ -21,7 +21,7 @@ This file is part of the HWS Weeding Manager.
 <cfparam name="url.view" default="">
 <cfsilent>
 	<cfset title = "Weeding Manager">
-    <cfinclude template = "config.cfm">
+    <cfinclude template = "../config.cfm">
 </cfsilent>
 <cfinvoke
 	component="#application.display.cfc#"

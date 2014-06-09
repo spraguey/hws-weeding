@@ -31,7 +31,7 @@ This file is part of the HWS Weeding Manager.
 			<cfif isdefined("arguments.item_barcode_recordset") AND arguments.item_barcode_recordset.recordcount neq 0>
 	            <cfset item_barcode_list = ValueList(arguments.item_barcode_recordset.item_barcode)>
 			</cfif>
-			<cfquery name="getBibs" datasource="voyager">
+			<cfquery name="getBibs" datasource="#application.dsn.voyager#">
 				SELECT DISTINCT
 					<cfif isdefined("arguments.marc_fields")>
                         <cfloop list="#arguments.marc_fields#" index="field">
@@ -106,7 +106,7 @@ This file is part of the HWS Weeding Manager.
 			<cfif isdefined("arguments.item_barcode_recordset") AND arguments.item_barcode_recordset.recordcount neq 0>
 	            <cfset item_barcode_list = ValueList(arguments.item_barcode_recordset.item_barcode)>
 			</cfif>
-			<cfquery name="getBibs" datasource="voyager">
+			<cfquery name="getBibs" datasource="#application.dsn.voyager#">
 				SELECT DISTINCT
 					<cfif isdefined("arguments.marc_fields")>
                         <cfloop list="#arguments.marc_fields#" index="field">
@@ -184,7 +184,7 @@ This file is part of the HWS Weeding Manager.
 
     <cffunction name="get_callno_from_barcode" access="public" returntype="query">
         <cfargument name="barcode" type="string" required="yes">
-        <cfquery name="getCallno" datasource="voyager">
+        <cfquery name="getCallno" datasource="#application.dsn.voyager#">
             SELECT
             	LOCATION_ID,
                 NORMALIZED_CALL_NO,
@@ -245,7 +245,7 @@ This file is part of the HWS Weeding Manager.
     <!--- get department ID from IID --->
     <cffunction name="get_department_by_iid" access="public" returntype="numeric">
         <cfargument name="iid" type="numeric" required="yes">
-        <cfquery name="lookupRequestorDepartment" datasource="library">
+        <cfquery name="lookupRequestorDepartment" datasource="#application.dsn.library#">
             SELECT
                 department_ID
             FROM
@@ -259,7 +259,7 @@ This file is part of the HWS Weeding Manager.
         
         <!--- not found in lookup table --->
         <cfif len(arguments.iid) lt 8> <!--- iid is dept_id --->
-            <cfquery name="lookupDepartment" datasource="library">
+            <cfquery name="lookupDepartment" datasource="#application.dsn.library#">
                 SELECT
                     ID
                 FROM
@@ -268,7 +268,7 @@ This file is part of the HWS Weeding Manager.
                     ID = <cfqueryparam value="#arguments.iid#" cfsqltype="cf_sql_integer">
             </cfquery>
             <cfif lookupDepartment.recordcount eq 1>
-                <cfquery name="updateRequestorDepartment" datasource="library_rw">
+                <cfquery name="updateRequestorDepartment" datasource="#application.dsn.library_rw#">
                     INSERT INTO
                         requestor_department (requestor_ID, department_ID)
                     VALUES (
@@ -281,7 +281,7 @@ This file is part of the HWS Weeding Manager.
                 <cfreturn 0>
             </cfif>
         <cfelse> <!--- cwid --->
-            <cfquery name="lookupVoyagerDepartment" datasource="voyager">
+            <cfquery name="lookupVoyagerDepartment" datasource="#application.dsn.voyager#">
                 SELECT
                     ADDRESS_LINE1 "dept"
                 FROM
@@ -293,7 +293,7 @@ This file is part of the HWS Weeding Manager.
                     AND PATRON.INSTITUTION_ID = <cfqueryparam value="#arguments.iid#" cfsqltype="cf_sql_varchar">
             </cfquery>
             <cfif lookupVoyagerDepartment.recordcount eq 1>
-                <cfquery name="verifyDepartment" datasource="library">
+                <cfquery name="verifyDepartment" datasource="#application.dsn.library#">
                     SELECT
                         ID,
                         see
@@ -308,7 +308,7 @@ This file is part of the HWS Weeding Manager.
                     <cfelse>
                         <cfset departmentId = verifyDepartment.ID>
                     </cfif>
-                    <cfquery name="updateRequestorDepartment" datasource="library_rw">
+                    <cfquery name="updateRequestorDepartment" datasource="#application.dsn.library_rw#">
                         INSERT INTO
                             requestor_department (requestor_ID, department_ID)
                         VALUES (
@@ -333,7 +333,7 @@ This file is part of the HWS Weeding Manager.
             	<cfthrow type="Not authorized">
             </cfif>
             
-            <cfquery name="item_history" datasource="voyager">
+            <cfquery name="item_history" datasource="#application.dsn.voyager#">
             	SELECT * FROM (
                     SELECT
                         p.first_name,
@@ -378,7 +378,7 @@ This file is part of the HWS Weeding Manager.
     
     <cffunction name="get_item_status" access="public" returntype="any">
     	<cfargument name="item_barcode" type="string" required="yes">
-        <cfquery name="itemStatus" datasource="voyager">
+        <cfquery name="itemStatus" datasource="#application.dsn.voyager#">
             SELECT
             	ist.ITEM_STATUS_TYPE,
                 ist.ITEM_STATUS_DESC,
@@ -414,7 +414,7 @@ This file is part of the HWS Weeding Manager.
             	<cfset arguments.location_code = UCase(arguments.location_code)>
             </cfif>
             
-        	<cfquery name="items" datasource="voyager">
+        	<cfquery name="items" datasource="#application.dsn.voyager#">
             	SELECT
 				<cfif isdefined("arguments.countonly") and arguments.countonly eq 'yes'>
                     count(DISTINCT ib.ITEM_BARCODE) "item_count"
@@ -521,7 +521,7 @@ This file is part of the HWS Weeding Manager.
         </cfif>
         
         <cftry>
-            <cfquery name="items_by_status" datasource="voyager">
+            <cfquery name="items_by_status" datasource="#application.dsn.voyager#">
                 SELECT 
                     bt.TITLE,
                     bt.AUTHOR,
@@ -575,7 +575,7 @@ This file is part of the HWS Weeding Manager.
         <cfargument name="location_code" type="string" required="no">
         <cfargument name="location_ID" type="string" required="no">
 
-        <cfquery name="getLocation" datasource="voyager">
+        <cfquery name="getLocation" datasource="#application.dsn.voyager#">
         	SELECT
             	LOCATION_ID,
                 LOCATION_CODE,
@@ -606,7 +606,7 @@ This file is part of the HWS Weeding Manager.
         <cfset max_bucket = left(year(now()) - 5, 3) & cutoff>
         <cfset min_bucket = max_bucket - 40>
         
-        <cfquery name="getLocationStats" datasource="voyager">
+        <cfquery name="getLocationStats" datasource="#application.dsn.voyager#">
             SELECT
                 LC_CLASS,
                 sum(
@@ -681,7 +681,7 @@ This file is part of the HWS Weeding Manager.
 			<cfif isdefined("arguments.item_barcode_recordset") AND arguments.item_barcode_recordset.recordcount neq 0>
 	            <cfset item_barcode_list = ValueList(arguments.item_barcode_recordset.item_barcode)>
 			</cfif>
-			<cfquery name="getMfhds" datasource="voyager">
+			<cfquery name="getMfhds" datasource="#application.dsn.voyager#">
 				SELECT
 					<cfif isdefined("arguments.item_barcode_recordset") OR isdefined("arguments.item_barcode")>
 						ib.ITEM_BARCODE,
@@ -732,7 +732,7 @@ This file is part of the HWS Weeding Manager.
         <cfargument name="count" type="numeric" required="no">
         
 		<cftry>
-        	<cfquery name="newbooks" datasource="voyager">
+        	<cfquery name="newbooks" datasource="#application.dsn.voyager#">
             	<cfif isdefined("arguments.count")>
                 select * from (
                 </cfif>
@@ -777,7 +777,7 @@ This file is part of the HWS Weeding Manager.
             </cfif>
             <cfset patron = StructNew()>
             <cfif isdefined("arguments.iid") and len(arguments.iid) lt 8> <!--- suid --->
-                <cfquery name="getPatron" datasource="library">
+                <cfquery name="getPatron" datasource="#application.dsn.library#">
                     SELECT
                         name As firstname
                     FROM
@@ -793,7 +793,7 @@ This file is part of the HWS Weeding Manager.
                     <cfset patron.status = 'n/a'>
                 </cfif>
             <cfelse> <!--- cwid --->
-                <cfquery name="getPatron" datasource="voyager">
+                <cfquery name="getPatron" datasource="#application.dsn.voyager#">
                     SELECT
                         p.INSTITUTION_ID,
                         p.FIRST_NAME "firstname",

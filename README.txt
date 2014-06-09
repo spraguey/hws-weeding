@@ -19,6 +19,14 @@ Copyright 2014 Hobart & William Smith Colleges
 
 Release notes
 
+6/9/14
+
+Moved config.cfm to root directory and added application.dsn variables for 
+the three Coldfusion data sources currently used by the application:
+* application.dsn.library is a read-only user for the weeding tables
+* application.dsn.library_rw is a read-write user for the weeding tables
+* application.dsn.voyager is a read-only user for the Voyager Oracle tables
+
 4/28/14
 
 The HWS implementation of Weeding Manager depends on other parts of our

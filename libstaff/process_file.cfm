@@ -112,7 +112,7 @@ This file is part of the HWS Weeding Manager.
 			<cfdump var="#barcodes_error#">
 		</cfif>
 		<cfif barcodes_added.recordcount neq 0>
-			<cfquery name="tagged_items" datasource="library">
+			<cfquery name="tagged_items" datasource="#application.dsn.library#">
 				SELECT DISTINCT
 					wi.item_barcode
 				FROM

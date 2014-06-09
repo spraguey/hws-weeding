@@ -21,7 +21,7 @@ This file is part of the HWS Weeding Manager.
 <cfcomponent name="miscellaneous">
     <cffunction name="get_department_ID" access="public" returntype="numeric">
         <cfargument name="dept" type="string" required="yes">
-        <cfquery name="getDepartmentRecord" datasource="library">
+        <cfquery name="getDepartmentRecord" datasource="#application.dsn.library#">
             SELECT
                 ID,
                 see
@@ -42,7 +42,7 @@ This file is part of the HWS Weeding Manager.
     </cffunction>
     
     <cffunction name="get_department_list" access="public" returntype="query">
-        <cfquery name="dept_list" datasource="library">
+        <cfquery name="dept_list" datasource="#application.dsn.library#">
             SELECT
                 name "dept",
                 ID
@@ -58,7 +58,7 @@ This file is part of the HWS Weeding Manager.
     
     <cffunction name="get_department_name" access="public" returntype="string">
         <cfargument name="dept_id" type="numeric" required="yes">
-        <cfquery name="lookupDepartment" datasource="library">
+        <cfquery name="lookupDepartment" datasource="#application.dsn.library#">
             SELECT
                 name
             FROM
@@ -76,7 +76,7 @@ This file is part of the HWS Weeding Manager.
     <cffunction name="get_departments" access="public" returntype="query">
     	<cfargument name="liaison_ID" type="numeric" required="no">
         <cfargument name="exclude_suppressed" type="string" required="no">
-        <cfquery name="departments" datasource="library">
+        <cfquery name="departments" datasource="#application.dsn.library#">
             SELECT DISTINCT
                 department.name,
                 department.ID
@@ -172,7 +172,7 @@ This file is part of the HWS Weeding Manager.
     
     <cffunction name="get_liaisons_by_subjectid" access="public" returntype="query">
         <cfargument name="subjectId" type="numeric" required="yes">
-        <cfquery name="liaisons" datasource="library">
+        <cfquery name="liaisons" datasource="#application.dsn.library#">
             SELECT
                 ID,
                 firstname,
@@ -197,7 +197,7 @@ This file is part of the HWS Weeding Manager.
     
     <cffunction name="get_liaisons_by_deptid" access="public" returntype="query">
         <cfargument name="deptId" type="numeric" required="yes">
-        <cfquery name="getLiaisons" datasource="library">
+        <cfquery name="getLiaisons" datasource="#application.dsn.library#">
             SELECT DISTINCT
                 librarians.ID,
                 librarians.firstname,
@@ -220,7 +220,7 @@ This file is part of the HWS Weeding Manager.
     </cffunction>
     
     <cffunction name="get_subjects" access="public" returntype="query">
-    	<cfquery name="getSubjects" datasource="library">
+    	<cfquery name="getSubjects" datasource="#application.dsn.library#">
         	SELECT
             	ID,
                 subject
@@ -235,7 +235,7 @@ This file is part of the HWS Weeding Manager.
     <cffunction name="get_subjects_by_dept" access="public" returntype="query">
         <cfargument name="dept" type="string" required="yes">
         <cfset deptId = get_department_id(arguments.dept)>
-        <cfquery name="getSubjects" datasource="library">
+        <cfquery name="getSubjects" datasource="#application.dsn.library#">
             SELECT
                 ID,
                 subject
@@ -249,7 +249,7 @@ This file is part of the HWS Weeding Manager.
     
     <cffunction name="get_subjects_by_liaisonid" access="public" returntype="query">
         <cfargument name="liaisonId" required="yes">
-        <cfquery name="getSubjects" datasource="library">
+        <cfquery name="getSubjects" datasource="#application.dsn.library#">
             SELECT DISTINCT
                 ID,
                 subject

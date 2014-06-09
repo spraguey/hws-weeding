@@ -31,7 +31,7 @@ This file is part of the HWS Weeding Manager.
                 <cfthrow type="Not authorized">
             </cfif>
 
-            <cfquery name="acknowledgeComment" datasource="library_rw">
+            <cfquery name="acknowledgeComment" datasource="#application.dsn.library_rw#">
                 UPDATE weeding_bib_comment
                 SET
                     acknowledged = 'yes'
@@ -99,7 +99,7 @@ This file is part of the HWS Weeding Manager.
                 returnvariable="voyager_bib"
             />
             
-            <cfquery name="addBib" datasource="library_rw">
+            <cfquery name="addBib" datasource="#application.dsn.library_rw#">
             	DELETE FROM
                 	weeding_bib
                 WHERE
@@ -210,7 +210,7 @@ This file is part of the HWS Weeding Manager.
                     bib_ID="#arguments.bib_ID#"
                     department_ID="#arguments.department_ID#"
                 />
-                <cfquery name="addBibDepartment" datasource="library_rw">
+                <cfquery name="addBibDepartment" datasource="#application.dsn.library_rw#">
                     INSERT INTO
                         weeding_bib_department
                             (bib_ID, department_ID)
@@ -221,7 +221,7 @@ This file is part of the HWS Weeding Manager.
                 </cfquery>
             <cfelse>
             	<!--- no department_ID supplied --->
-                <cfquery name="item" datasource="library">
+                <cfquery name="item" datasource="#application.dsn.library#">
                 	SELECT DISTINCT
                     	wi.normalized_call_no
                     FROM
@@ -248,7 +248,7 @@ This file is part of the HWS Weeding Manager.
                                 bib_ID="#arguments.bib_ID#"
                                 department_ID="#matched_departments.department_ID#"
                             />
-                            <cfquery name="addBibDepartment" datasource="library_rw">
+                            <cfquery name="addBibDepartment" datasource="#application.dsn.library_rw#">
                                 INSERT INTO
                                     weeding_bib_department
                                         (bib_ID, department_ID)
@@ -283,7 +283,7 @@ This file is part of the HWS Weeding Manager.
                 faculty_ID="#session.user.IID#"
                 department_ID="#arguments.department_ID#"
             />
-            <cfquery name="addDeptSubscription" datasource="library_rw">
+            <cfquery name="addDeptSubscription" datasource="#application.dsn.library_rw#">
                 INSERT INTO weeding_department_subscription (
                     faculty_ID,
                     department_ID
@@ -329,7 +329,7 @@ This file is part of the HWS Weeding Manager.
             	<cfthrow message="Unable to retrieve bib record">
             </cfif>
             
-			<cfquery name="addItem" datasource="library_rw">
+			<cfquery name="addItem" datasource="#application.dsn.library_rw#">
             	DELETE FROM
                 	weeding_item
                 WHERE
@@ -432,7 +432,7 @@ This file is part of the HWS Weeding Manager.
             	<cfthrow type="Not logged in">
             </cfif>
 
-            <cfquery name="addComment" datasource="library_rw">
+            <cfquery name="addComment" datasource="#application.dsn.library_rw#">
             	DELETE FROM
                 	weeding_bib_comment
                 WHERE
@@ -466,7 +466,7 @@ This file is part of the HWS Weeding Manager.
                 <cfthrow type="Not authorized">
             </cfif>
             
-			<cfquery name="deleteBibItems" datasource="library_rw">
+			<cfquery name="deleteBibItems" datasource="#application.dsn.library_rw#">
             	DELETE
                 FROM
                 	weeding_item
@@ -474,7 +474,7 @@ This file is part of the HWS Weeding Manager.
                 	bib_ID = <cfqueryparam value="#arguments.bib_ID#" cfsqltype="cf_sql_integer">
             </cfquery>
             
-            <cfquery name="deleteBibDepartments" datasource="library_rw">
+            <cfquery name="deleteBibDepartments" datasource="#application.dsn.library_rw#">
             	DELETE
                 FROM
                 	weeding_bib_department
@@ -482,7 +482,7 @@ This file is part of the HWS Weeding Manager.
                 	bib_ID = <cfqueryparam value="#arguments.bib_ID#" cfsqltype="cf_sql_integer">
             </cfquery>
             
-            <cfquery name="deleteBib" datasource="library_rw">
+            <cfquery name="deleteBib" datasource="#application.dsn.library_rw#">
             	DELETE
                 FROM
                 	weeding_bib
@@ -505,7 +505,7 @@ This file is part of the HWS Weeding Manager.
                 <cfthrow type="Not authorized">
             </cfif>
 
-            <cfquery name="deleteBibDepartment" datasource="library_rw">
+            <cfquery name="deleteBibDepartment" datasource="#application.dsn.library_rw#">
                 DELETE
                 FROM
                     weeding_bib_department
@@ -530,7 +530,7 @@ This file is part of the HWS Weeding Manager.
             	<cfthrow type="Not logged in">
             </cfif>
 
-            <cfquery name="deleteDeptSubscription" datasource="library_rw">
+            <cfquery name="deleteDeptSubscription" datasource="#application.dsn.library_rw#">
             	DELETE
                 FROM weeding_department_subscription
                 WHERE
@@ -559,7 +559,7 @@ This file is part of the HWS Weeding Manager.
                 returnvariable="item"
             />
 
-			<cfquery name="deleteItem" datasource="library_rw">
+			<cfquery name="deleteItem" datasource="#application.dsn.library_rw#">
 				DELETE FROM
 					weeding_item
 				WHERE
@@ -1018,7 +1018,7 @@ This file is part of the HWS Weeding Manager.
         
 		<cftry>
         	<cfif isdefined("session.authorization.cataloging")>
-                <cfquery name="editBib" datasource="library_rw">
+                <cfquery name="editBib" datasource="#application.dsn.library_rw#">
                     UPDATE
                         weeding_bib
                     SET
@@ -1060,7 +1060,7 @@ This file is part of the HWS Weeding Manager.
                 <cfset review_start = DateFormat(max(DateAdd('d', 7, Now()),live_date), 'yyyy-mm-dd')>
             </cfif>
 
-            <cfquery name="editBib" datasource="library_rw">
+            <cfquery name="editBib" datasource="#application.dsn.library_rw#">
                 UPDATE
                     weeding_bib
                 SET
@@ -1127,7 +1127,7 @@ This file is part of the HWS Weeding Manager.
     	<cfargument name="bib_ID" required="no" type="numeric">
         <cfargument name="distinct" required="no" type="string">
 
-        <cfquery name="getBibDepartments" datasource="library">
+        <cfquery name="getBibDepartments" datasource="#application.dsn.library#">
         	SELECT
             	<cfif isdefined("arguments.distinct")>
                 DISTINCT
@@ -1177,7 +1177,7 @@ This file is part of the HWS Weeding Manager.
                 <cfset arguments.has_comments = 'yes'>
             </cfif>
             
-            <cfquery name="weeding_bib" datasource="library">
+            <cfquery name="weeding_bib" datasource="#application.dsn.library#">
                 SELECT
                     <cfif isdefined("arguments.faculty_ID")>
                     	wic.comment "faculty_comment",
@@ -1387,7 +1387,7 @@ This file is part of the HWS Weeding Manager.
     <cffunction name="get_faculty_comments" returntype="query">
     	<cfargument name="bib_ID" type="numeric" required="yes">
 
-        <cfquery name="getFacultyComments" datasource="library">
+        <cfquery name="getFacultyComments" datasource="#application.dsn.library#">
         	SELECT
             	faculty_ID,
                 comment,
@@ -1417,7 +1417,7 @@ This file is part of the HWS Weeding Manager.
     <cffunction name="get_item_stats" returntype="query">
     	<cfargument name="item_barcode" required="yes" type="string">
 		<cfset arguments.item_barcode = REReplace(arguments.item_barcode, '_', '')>
-        <cfquery name="item_stats" datasource="voyager">
+        <cfquery name="item_stats" datasource="#application.dsn.voyager#">
             SELECT
                 i.historical_charges, 
                 i.historical_browses,
@@ -1439,7 +1439,7 @@ This file is part of the HWS Weeding Manager.
         <cfargument name="bib_ID" required="no" type="numeric" />
 		
         <cftry>
-            <cfquery name="item_records" datasource="library">
+            <cfquery name="item_records" datasource="#application.dsn.library#">
             	SELECT
                     '_' + wi.item_barcode item_barcode, <!--- JavaScript has a nasty tendency to convert barcodes into exponential notation, so we prepend a _ to the barcode in the initial query here and strip it off later --->
                     wi.librarian_ID,
@@ -1478,7 +1478,7 @@ This file is part of the HWS Weeding Manager.
 	</cffunction>
     
     <cffunction name="get_subscriptions" returntype="query">
-    	<cfquery name="subscriptions" datasource="library">
+    	<cfquery name="subscriptions" datasource="#application.dsn.library#">
         	SELECT
             	s.faculty_ID,
                 s.department_ID,
@@ -1497,7 +1497,7 @@ This file is part of the HWS Weeding Manager.
     <cffunction name="is_subscribed" returntype="string">
     	<cfargument name="faculty_ID" type="numeric" required="yes">
         <cfargument name="department_ID" type="numeric" required="yes">
-        <cfquery name="getDeptSubscription" datasource="library">
+        <cfquery name="getDeptSubscription" datasource="#application.dsn.library#">
         	SELECT *
             FROM weeding_department_subscription
             WHERE
@@ -1522,7 +1522,7 @@ This file is part of the HWS Weeding Manager.
             <cfif len(arguments.bib_IDs) eq 0>
             	<cfreturn 0>
             </cfif>
-            <cfquery datasource="library_rw">
+            <cfquery datasource="#application.dsn.library_rw#">
             	UPDATE
                 	weeding_bib
                 SET
@@ -1592,7 +1592,7 @@ This file is part of the HWS Weeding Manager.
                 returnvariable="voyager_scc"
             />
 
-            <cfquery name="weeding_items" datasource="library">
+            <cfquery name="weeding_items" datasource="#application.dsn.library#">
             	SELECT
                 	wi.item_barcode
                 FROM
@@ -1624,7 +1624,7 @@ This file is part of the HWS Weeding Manager.
             </cfif>
             
             <cfloop query="completed_items">
-            	<cfquery name="complete_item" datasource="library_rw">
+            	<cfquery name="complete_item" datasource="#application.dsn.library_rw#">
                 	UPDATE
                     	weeding_item
                     SET
@@ -1635,7 +1635,7 @@ This file is part of the HWS Weeding Manager.
                 </cfquery>
             </cfloop>
            	
-            <cfquery name="complete_bibs" datasource="library_rw">
+            <cfquery name="complete_bibs" datasource="#application.dsn.library_rw#">
                 UPDATE
                 	weeding_bib
                 SET
@@ -1662,7 +1662,7 @@ This file is part of the HWS Weeding Manager.
 
     <cffunction name="update_printed" returntype="any">
     	<cftry>
-        	<cfquery name="expired_printed" datasource="library">
+        	<cfquery name="expired_printed" datasource="#application.dsn.library#">
             	SELECT
                 	wb.bib_ID
                 FROM
@@ -1673,7 +1673,7 @@ This file is part of the HWS Weeding Manager.
                     AND wb.last_updated < <cfqueryparam value="#DateAdd('d', print_expire_interval * -1, Now())#" cfsqltype="cf_sql_date">
             </cfquery>
             
-            <cfquery name="update_expired" datasource="library_rw">
+            <cfquery name="update_expired" datasource="#application.dsn.library_rw#">
             	UPDATE weeding_bib
                 SET
                 	printed = NULL,

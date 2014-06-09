@@ -81,7 +81,7 @@ This file is part of the HWS Weeding Manager.
     <cffunction name="get_user" access="public" returntype="any">
     	<cfargument name="userid" type="numeric" required="no">
         <cfargument name="expired" type="string" default="no" required="no">
-		<cfquery name="user" datasource="library">
+		<cfquery name="user" datasource="#application.dsn.library#">
         	SELECT
             	l.ID,
                 l.firstname,
