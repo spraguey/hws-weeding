@@ -39,6 +39,15 @@ This file is part of the HWS Weeding Manager.
 <cfif not(isdefined("application.opac"))>
     <cfset application.opac = "voyager.hws.edu">
 </cfif>
+<cfif not(isdefined("application.dsn.library"))>
+    <cfset application.dsn.library = "library">
+</cfif>
+<cfif not(isdefined("application.dsn.library_rw"))>
+    <cfset application.dsn.library_rw = "library_rw">
+</cfif>
+<cfif not(isdefined("application.dsn.voyager"))>
+    <cfset application.dsn.voyager = "voyager">
+</cfif>
 
  <cffunction name="isLoggedIn">
 	<cfif isdefined("session.verified")>
