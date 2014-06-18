@@ -17,12 +17,8 @@ This file is part of the HWS Weeding Manager.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --->
-<cfsetting requesttimeout="3000">
-<cfparam name="url.view" default="">
-<cfsilent>
-	<cfset title = "Weeding Manager">
-    <cfinclude template = "../config.cfm">
-</cfsilent>
+<cfset title = "Weeding">
+<cfinclude template = "config.cfm">
 <html>
 <head>
     <cfinclude template = "#application.weeding.home#/includes/header.cfm">
@@ -33,12 +29,31 @@ This file is part of the HWS Weeding Manager.
 	<div id="main">
 		<div class="container_16">
 			<div class="grid_12">
+                <cfinvoke
+                    component="#application.display.cfc#"
+                    method="display_breadcrumbs"
+                    breadcrumb="Weeding Home"
+                    breadcrumb_url="#application.weeding.home#"
+                />
                 <cftry>
-                	<cfif ListContains('manage,upload', url.view) neq 0>
-						<cfinclude template="#url.view#.cfm">
-                    <cfelse>
-						<cfinclude template="dashboard.cfm">
-                    </cfif>
+                    <cfoutput>
+                        <h2>#title#</h2>
+                        <cfif not(isdefined("session.verified"))>
+                            <cfthrow
+                                message="Please log in."
+                            />
+                        </cfif>
+                        
+                        <cfif session.authorization.authorized neq 'yes'>
+                            <cfthrow 
+                                type="Not authorized"
+                                detail="You are not authorized to use this page.">
+                        </cfif>
+                        <p><a href="libstaff">Library staff portal</a></p>
+                        <p><a href="faculty">Faculty portal</a></p>
+                        <p><a href="admin">Admin portal</a></p>
+                        
+                     </cfoutput>
                     <cfcatch>
                         <cfoutput>
                             <cfif cfcatch.type neq 'Application'>
@@ -61,7 +76,9 @@ This file is part of the HWS Weeding Manager.
                 </div>
             </div>
             <div class="clear"></div>
-		<!--- content end   --->
-		</div>
+        <!--- content end   --->
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -18,23 +18,31 @@ This file is part of the HWS Weeding Manager.
 
 --->
 
+<!--- After creating a regular user with admin privileges, comment this out to disable --->
+<cfset application.adminpw = 'vA/echuZU7hE$'>
+
+<cfset application.weeding.home = "/hws-weeding">
+
 <cfif not(isdefined("application.authorization.cfc"))>
-    <cfset application.authorization.cfc = "cfc.authorization">
+    <cfset application.authorization.cfc = "hws-weeding.cfc.authorization">
 </cfif>
 <cfif not(isdefined("application.conspectus.cfc"))>
-    <cfset application.conspectus.cfc = "/conspectus">
+    <cfset application.conspectus.cfc = "hws-weeding.cfc.conspectus">
 </cfif>
 <cfif not(isdefined("application.display.cfc"))>
-    <cfset application.display.cfc = "cfc.display">
+    <cfset application.display.cfc = "hws-weeding.cfc.display">
+</cfif>
+<cfif not(isdefined("application.login.cfc"))>
+    <cfset application.login.cfc = "hws-weeding.cfc.login">
 </cfif>
 <cfif not(isdefined("application.miscellaneous.cfc"))>
-    <cfset application.miscellaneous.cfc = "cfc.miscellaneous">
+    <cfset application.miscellaneous.cfc = "hws-weeding.cfc.miscellaneous">
 </cfif>
 <cfif not(isdefined("application.voyager.cfc"))>
-    <cfset application.voyager.cfc = "cfc.voyager">
+    <cfset application.voyager.cfc = "hws-weeding.cfc.voyager">
 </cfif>
 <cfif not(isdefined("application.weeding.cfc"))>
-    <cfset application.weeding.cfc = "cfc.weeding">
+    <cfset application.weeding.cfc = "hws-weeding.cfc.weeding">
 </cfif>
 <cfif not(isdefined("application.opac"))>
     <cfset application.opac = "voyager.hws.edu">
@@ -50,6 +58,9 @@ This file is part of the HWS Weeding Manager.
 </cfif>
 
  <cffunction name="isLoggedIn">
+    <!--- DEBUG: bypass login --->
+    <cfreturn 'yes'>
+
 	<cfif isdefined("session.verified")>
         <cfreturn 'yes'>
     <cfelse>
@@ -59,7 +70,7 @@ This file is part of the HWS Weeding Manager.
  
  <cffunction name="isAuthorized">
     <cfargument name="authtype" type="string" required="no">
-
+    
     <!--- admin is always authorized --->
     <cfif isdefined("session.authorization.admin")>
         <cfreturn 'yes'>

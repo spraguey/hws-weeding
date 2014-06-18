@@ -19,6 +19,12 @@ This file is part of the HWS Weeding Manager.
 --->
 <cftry>
     <cfoutput>
+        <cfinvoke
+            component="#application.display.cfc#"
+            method="display_breadcrumbs"
+            breadcrumb="Weeding Home,Library Staff Portal,Add Items"
+            breadcrumb_url="#application.weeding.home#,.,?view=upload"
+        />
         <h2>Upload Items</h2>
         <cfif isLoggedIn() neq 'yes'>
             <cfthrow message="Please log in.">
@@ -97,9 +103,9 @@ This file is part of the HWS Weeding Manager.
         <script language="JavaScript" type="text/javascript">
         <!--
             function addBarcode(currentBarcode) {
-                $('##addBarcodeStatus').html('<img src="/images/ajax-loader.gif" alt="Working..."/>');
-//								currentBarcode = $('##singleBarcode').val();
-                sendUrl = '/scripts/update.cfm?component=weeding&method=add_item&item_barcode=' + currentBarcode;
+                $('##addBarcodeStatus').html('Working...');
+//				currentBarcode = $('##singleBarcode').val();
+                sendUrl = '#application.weeding.home#/scripts/update.cfm?component=weeding&method=add_item&item_barcode=' + currentBarcode;
                 $.ajax({
                     url: sendUrl,
                     success: function(result) {
@@ -109,14 +115,14 @@ This file is part of the HWS Weeding Manager.
                             return false;
                         }
                         $('##addBarcodeStatus').html('');
-                        getDescription = '/scripts/get.cfm?component=weeding&method=get_items&item_barcode=' + currentBarcode;
+                        getDescription = '#application.weeding.home#/scripts/get.cfm?component=weeding&method=get_items&item_barcode=' + currentBarcode;
                         $.ajax({
                             url: getDescription,
                             success: function(result) {
                                 result = jQuery.parseJSON(result);
                                 var bibid = result.DATA[0][3];
                                 
-                                getBib = '/staff/weeding/bib.cfm?bib_ID=' + bibid;
+                                getBib = '#application.weeding.home#/libstaff/bib.cfm?bib_ID=' + bibid;
                                 $.ajax({
                                     url: getBib,
                                     success: function(newitem) {
@@ -184,7 +190,7 @@ This file is part of the HWS Weeding Manager.
 //    			window.alert(querystring);
     
                 $("##status_"+bibID)
-                    .load('/scripts/update.cfm', querystring);
+                    .load('#application.weeding.home#/scripts/update.cfm', querystring);
                 $('##singleBarcode').focus();
             }
             
@@ -206,7 +212,7 @@ This file is part of the HWS Weeding Manager.
                 querystring = "component=weeding&method=delete_bib_department&bib_ID=" + bibID + "&department_ID=" + department_ID;
     //			window.alert(querystring);
                 $.ajax({
-                    url: '/scripts/update.cfm?' + querystring,
+                    url: '#application.weeding.home#/scripts/update.cfm?' + querystring,
                     success: function(){
                         $("##bib_" + bibID + "_department_" + department_ID).remove();
                         $("##status_"+bibID).html(
@@ -225,7 +231,7 @@ This file is part of the HWS Weeding Manager.
                 deptname = $("##add_department_"+bibID).val();
     //			window.alert(deptname);
                 $.ajax({
-                    url: '/scripts/get.cfm?component=miscellaneous&method=get_department_id&dept=' + deptname,
+                    url: '#application.weeding.home#/scripts/get.cfm?component=miscellaneous&method=get_department_id&dept=' + deptname,
                     success: function(dept_ID){
                         dept_ID = jQuery.trim(dept_ID);
     //					$('##dump').html(dept_ID);
@@ -233,7 +239,7 @@ This file is part of the HWS Weeding Manager.
                             window.alert('Department not found');
                         } else {
                             $.ajax({
-                                url: '/scripts/update.cfm?component=weeding&method=add_bib_department&bib_ID=' + bibID + '&department_ID=' + dept_ID,
+                                url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=add_bib_department&bib_ID=' + bibID + '&department_ID=' + dept_ID,
                                 success: function(response){
                                     if (jQuery.trim(response) == 'Error') {
                                         $("##status_"+bibID).html(
@@ -263,7 +269,7 @@ This file is part of the HWS Weeding Manager.
     
             function add_item(barcode, bibID) {
                 $.ajax({
-                    url: '/scripts/update.cfm?component=weeding&method=add_item&item_barcode=' + barcode,
+                    url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=add_item&item_barcode=' + barcode,
                     success: function(result) {
     //					result = jQuery.trim(result);
     //					window.alert(result);
@@ -277,7 +283,7 @@ This file is part of the HWS Weeding Manager.
     
             function delete_item(barcode, bibID) {
                 $.ajax({
-                    url: '/scripts/update.cfm?component=weeding&method=delete_item&item_barcode=' + barcode,
+                    url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=delete_item&item_barcode=' + barcode,
                     success: function(result) {
     //					result = jQuery.trim(result);
     //					window.alert(result);
@@ -291,7 +297,7 @@ This file is part of the HWS Weeding Manager.
     
             function add_all(bibID) {
                 $.ajax({
-                    url: '/scripts/update.cfm?component=weeding&method=add_all&bib_ID=' + bibID,
+                    url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=add_all&bib_ID=' + bibID,
                     success: function(result) {
     //					result = jQuery.trim(result);
     //					window.alert(result);
@@ -305,7 +311,7 @@ This file is part of the HWS Weeding Manager.
     
             function delete_bib(bibID) {
                 $.ajax({
-                    url: '/scripts/update.cfm?component=weeding&method=delete_bib&bib_ID=' + bibID,
+                    url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=delete_bib&bib_ID=' + bibID,
                     success: function(result) {
 //    					result = jQuery.trim(result);
 //		                $("##status_"+bibID).html(result);
@@ -340,7 +346,7 @@ This file is part of the HWS Weeding Manager.
 //    			window.alert(querystring);
     
                 $("##status_"+bibID)
-                    .load('/scripts/update.cfm', querystring);
+                    .load('#application.weeding.home#/scripts/update.cfm', querystring);
 
             }
             
@@ -357,7 +363,7 @@ This file is part of the HWS Weeding Manager.
                 querystring = "component=weeding&method=delete_bib_department&bib_ID=" + bibID + "&department_ID=" + department_ID;
     //			window.alert(querystring);
                 $.ajax({
-                    url: '/scripts/update.cfm?' + querystring,
+                    url: '#application.weeding.home#/scripts/update.cfm?' + querystring,
                     success: function(){
                         $("##bib_" + bibID + "_department_" + department_ID).remove();
                     }
@@ -368,7 +374,7 @@ This file is part of the HWS Weeding Manager.
                 deptname = $("##add_department_" + bibid).val();
     //			window.alert(deptname);
                 $.ajax({
-                    url: '/scripts/get.cfm?component=miscellaneous&method=get_department_id&dept=' + deptname,
+                    url: '#application.weeding.home#/scripts/get.cfm?component=miscellaneous&method=get_department_id&dept=' + deptname,
                     success: function(dept_ID){
                         dept_ID = jQuery.trim(dept_ID);
     //					$('##dump').html(dept_ID);
@@ -376,7 +382,7 @@ This file is part of the HWS Weeding Manager.
                             window.alert('Department not found');
                         } else {
                             $.ajax({
-                                url: '/scripts/update.cfm?component=weeding&method=add_bib_department&bib_ID=' + bibid + '&department_ID=' + dept_ID,
+                                url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=add_bib_department&bib_ID=' + bibid + '&department_ID=' + dept_ID,
                                 success: function(response){
                                     if (jQuery.trim(response) == 'Error') {
                                         window.alert('Unable to add department');
@@ -395,7 +401,7 @@ This file is part of the HWS Weeding Manager.
 
             function deleteBarcode(barcode) {
                 $.ajax({
-                    url: '/scripts/update.cfm?component=weeding&method=delete_item&item_barcode=' + barcode + '&librarian_ID=#session.authorization.userid#',
+                    url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=delete_item&item_barcode=' + barcode + '&librarian_ID=#session.authorization.userid#',
                     success: function(result) {
                         $("##" + barcode).remove();
                     }
@@ -405,7 +411,7 @@ This file is part of the HWS Weeding Manager.
             
             function deleteBib(bibid) {
                 $.ajax({
-                    url: '/scripts/update.cfm?component=weeding&method=delete_bib&bib_ID=' + bibid,
+                    url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=delete_bib&bib_ID=' + bibid,
                     success: function(result) {
                         $("##" + bibid).remove();
                     }
@@ -417,7 +423,7 @@ This file is part of the HWS Weeding Manager.
                 querystring = "component=weeding&method=delete_bib_department&bib_ID=" + bibid + "&department_ID=" + department_ID;
     //			window.alert(querystring);
                 $.ajax({
-                    url: '/scripts/update.cfm?' + querystring,
+                    url: '#application.weeding.home#/scripts/update.cfm?' + querystring,
                     success: function(){
                         $("##bib_" + bibid + "_department_" + department_ID).remove();
                     }
@@ -518,7 +524,7 @@ This file is part of the HWS Weeding Manager.
     //			window.alert(querystring);
     
                 $("##status_"+bibid)
-                    .load('/scripts/update.cfm', querystring);
+                    .load('#application.weeding.home#/scripts/update.cfm', querystring);
 
                 $('##singleBarcode').focus();
             }

@@ -19,6 +19,26 @@ Copyright 2014 Hobart & William Smith Colleges
 
 Release notes
 
+6/18/14
+
+* Added SQL definitions for missing tables, including insert statement to
+seed the [permissions] table with permissions used by the application.
+* Fixed broken references in the Library Staff portal.
+* Added an Admin Portal to manage users and departments.
+* Added a local admin user that can be used for testing and to set up other 
+user accounts once LDAP (or other) authentication has been configured. The 
+admin password should be changed in config.cfm and disabled when it is no 
+longer needed.
+* HWS's CSS and other layout has been largely disabled for easier debugging.
+
+Known issues:
+* Faculty view is not currently functional. This will be fixed in the next
+update.
+* The conspectus piece is not yet ready for release. The department lookup 
+on adding a new item currently errors silently; departments can still be 
+added manually.
+
+
 6/9/14
 
 Moved config.cfm to root directory and added application.dsn variables for 
@@ -26,6 +46,7 @@ the three Coldfusion data sources currently used by the application:
 * application.dsn.library is a read-only user for the weeding tables
 * application.dsn.library_rw is a read-write user for the weeding tables
 * application.dsn.voyager is a read-only user for the Voyager Oracle tables
+
 
 4/28/14
 

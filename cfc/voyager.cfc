@@ -772,9 +772,11 @@ This file is part of the HWS Weeding Manager.
         <cfargument name="expired" type="string" required="no">
         
         <cftry>
+<!---
             <cfif not(isdefined("session.verified") and session.verified eq 'yes')>
                 <cfthrow type="not-authorized">
             </cfif>
+--->
             <cfset patron = StructNew()>
             <cfif isdefined("arguments.iid") and len(arguments.iid) lt 8> <!--- suid --->
                 <cfquery name="getPatron" datasource="#application.dsn.library#">

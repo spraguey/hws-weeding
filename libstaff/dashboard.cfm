@@ -24,6 +24,12 @@ This file is part of the HWS Weeding Manager.
 </cfif>
 
 <cfoutput>
+    <cfinvoke
+        component="#application.display.cfc#"
+        method="display_breadcrumbs"
+        breadcrumb="Weeding Home,Library Staff Portal"
+        breadcrumb_url="#application.weeding.home#,."
+    />
 	<h2>#title#</h2>
 	<cfif isLoggedIn() neq 'yes'>
 		<cfthrow message="Please log in.">
@@ -46,7 +52,7 @@ This file is part of the HWS Weeding Manager.
 	<cfif isAuthorized('liaison') eq 'yes'>
 		<p><a href="?view=upload">Add items for weeding review</a></p>
 		<p><a href="?view=manage">Manage/review items</a></p>
-		<p><a href="/reports/collectionreview">Faculty view</a></p>
+		<p><a href="#application.weeding.home#/faculty">Faculty view</a></p>
 		<p>&nbsp;</p>
 	</cfif>
 	
@@ -179,7 +185,7 @@ This file is part of the HWS Weeding Manager.
 		function update_completed() {
 			$("##update_completed_status").text('Updating...');
 			$.ajax({
-				url: '/scripts/update.cfm?component=weeding&method=update_complete',
+				url: '#application.weeding.home#/scripts/update.cfm?component=weeding&method=update_complete',
 				success: function(result) {
 					$("##update_completed_status").text('Done');
 					window.location.reload();

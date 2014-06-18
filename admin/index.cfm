@@ -20,7 +20,7 @@ This file is part of the HWS Weeding Manager.
 <cfsetting requesttimeout="3000">
 <cfparam name="url.view" default="">
 <cfsilent>
-	<cfset title = "Weeding Manager">
+	<cfset title = "Admin Portal">
     <cfinclude template = "../config.cfm">
 </cfsilent>
 <html>
@@ -34,7 +34,19 @@ This file is part of the HWS Weeding Manager.
 		<div class="container_16">
 			<div class="grid_12">
                 <cftry>
-                	<cfif ListContains('manage,upload', url.view) neq 0>
+                    <cfif not(isdefined("session.verified"))>
+                        <cfthrow
+                            message="Please log in."
+                        />
+                    </cfif>
+                    
+                    <cfif not(session.authorization.authorized eq 'yes' and isdefined("session.authorization.admin"))>
+                        <cfthrow 
+                            type="Not authorized"
+                            detail="You are not authorized to use this page.">
+                    </cfif>
+                    
+                	<cfif ListContains('user,department', url.view) neq 0>
 						<cfinclude template="#url.view#.cfm">
                     <cfelse>
 						<cfinclude template="dashboard.cfm">

@@ -19,6 +19,91 @@ This file is part of the HWS Weeding Manager.
 --->
 
 <cfcomponent name="miscellaneous">
+    <cffunction name="add_department" access="public" returntype="any">
+        <cfargument name="name" type="string" required="yes">
+        <cfargument name="see" type="numeric" required="no">
+        <cfargument name="suppress_approval" type="string" required="no">
+        <cftry>
+            <cfif not(isdefined("session.authorization.admin"))>
+                <cfthrow type="not-authorized">
+            </cfif>
+            <cfinvoke
+                method="get_department_ID"
+                dept="#arguments.name#"
+                returnvariable="dept_exists"
+            />
+            <cfif dept_exists neq 0>
+                <cfreturn dept_exists>
+            </cfif>
+            
+            <cfquery name="addDepartment" datasource="#application.dsn.library_rw#">
+                SET NOCOUNT ON
+                INSERT INTO department (
+                    name,
+                    see,
+                    suppress_approval
+                ) VALUES (
+                	<cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar">,
+                    <cfif isdefined("arguments.see") and arguments.see neq 0>
+                        <cfqueryparam value="#arguments.see#" cfsqltype="cf_sql_integer">,
+                    <cfelse>
+                        NULL,
+                    </cfif>
+                    <cfif isdefined("arguments.suppress_approval") and arguments.suppress_approval eq 'yes'>
+                        'yes'
+                    <cfelse>
+                        NULL
+                    </cfif>
+               	)
+                SELECT @@Identity As dept_ID
+                SET NOCOUNT OFF
+            </cfquery>
+            
+            <cfreturn addDepartment.dept_ID>
+            
+            <cfcatch>
+                <cfreturn cfcatch>
+            </cfcatch>
+        </cftry>
+    </cffunction>
+    
+    <cffunction name="error_notification" access="public" returntype="void">
+    	<cfargument name="detail" required="yes">
+        
+        <cfmail
+        	from="#application.library#"
+            to="#application.sysadmin#"
+            subject="Web error report: #getPageContext().getRequest().getRequestURI()#"
+            type="html"
+        >
+        	<cfoutput>
+	        	URL: #cgi.SERVER_NAME & getPageContext().getRequest().getRequestURI()#<br/>
+				<cfif isdefined("session.user")>
+                <p><strong>User</strong></p>
+                    <cfloop collection="#session.user#" item="key">
+                    	<cfif lcase(key) neq 'password'>
+                            #key#: #StructFind(session.user, key)#<br/>
+                        </cfif>
+                    </cfloop>
+                </cfif>
+                <cfif isdefined("form") and not(structisempty(form))>
+                <p><strong>Form variables:</strong></p>
+                    <cfloop collection="#form#" item="key">
+                    	<cfif lcase(key) neq 'password'>
+                            #key#: #StructFind(form, key)#<br/>
+                        </cfif>
+                    </cfloop>
+                </cfif>
+                <cfif isdefined("url") and not(structisempty(url))>
+                Query string:
+                	<cfdump var="#url#">
+                </cfif>
+                Detail:
+                <cfdump var="#arguments.detail#">
+            </cfoutput>
+        </cfmail>
+    </cffunction>
+
     <cffunction name="get_department_ID" access="public" returntype="numeric">
         <cfargument name="dept" type="string" required="yes">
         <cfquery name="getDepartmentRecord" datasource="#application.dsn.library#">
@@ -74,12 +159,16 @@ This file is part of the HWS Weeding Manager.
     </cffunction>
     
     <cffunction name="get_departments" access="public" returntype="query">
+        <cfargument name="ID" type="numeric" required="no">
     	<cfargument name="liaison_ID" type="numeric" required="no">
         <cfargument name="exclude_suppressed" type="string" required="no">
-        <cfquery name="departments" datasource="#application.dsn.library#">
+        <cfargument name="include_see" type="string" required="no">
+        <cfquery name="departments" datasource="library">
             SELECT DISTINCT
                 department.name,
-                department.ID
+                department.ID,
+                department.suppress_approval,
+                department.see
             FROM
 				<cfif isdefined("arguments.liaison_ID")>
                 	subject, 
@@ -87,7 +176,13 @@ This file is part of the HWS Weeding Manager.
                 </cfif>
                 department
             WHERE
-                department.see is null
+                1=1
+                <cfif isdefined("arguments.ID")>
+                    AND ID = <cfqueryparam value="#arguments.ID#" cfsqltype="cf_sql_integer">
+                </cfif>
+                <cfif not(isdefined("arguments.include_see") and arguments.include_see eq 'yes')>
+                    AND department.see is null
+                </cfif>
                 <cfif isdefined("arguments.liaison_ID")>
                     AND 
                     	department.name = 'Interdisciplinary' OR
@@ -331,41 +426,57 @@ This file is part of the HWS Weeding Manager.
             </cfcatch>
         </cftry>
     </cffunction>
-    
-    <cffunction name="error_notification" access="public" returntype="void">
-    	<cfargument name="detail" required="yes">
-        
-        <cfmail
-        	from="#application.library#"
-            to="#application.sysadmin#"
-            subject="Web error report: #getPageContext().getRequest().getRequestURI()#"
-            type="html"
-        >
-        	<cfoutput>
-	        	URL: #cgi.SERVER_NAME & getPageContext().getRequest().getRequestURI()#<br/>
-				<cfif isdefined("session.user")>
-                <p><strong>User</strong></p>
-                    <cfloop collection="#session.user#" item="key">
-                    	<cfif lcase(key) neq 'password'>
-                            #key#: #StructFind(session.user, key)#<br/>
+
+    <cffunction name="update_department" access="public" returntype="any">
+        <cfargument name="ID" type="numeric" required="yes">
+        <cfargument name="name" type="string" required="no">
+        <cfargument name="see" type="numeric" required="no">
+        <cfargument name="suppress_approval" type="string" required="no">
+        <cftry>
+            <cfif not(isdefined("session.authorization.admin"))>
+                <cfthrow type="not-authorized">
+            </cfif>
+            <cfinvoke
+                method="get_department_ID"
+                dept="#arguments.name#"
+                returnvariable="dept_exists"
+            />
+            
+            <cfif not(isdefined("arguments.name"))>
+                <cfinvoke
+                    method="get_department_name"
+                    dept_ID="#arguments.ID#"
+                    returnvariable="arguments.name"
+                />
+            </cfif>
+            
+            <cfquery name="updateDepartment" datasource="#application.dsn.library_rw#">
+                UPDATE department
+                SET
+                    name = <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar">
+                    <cfif isdefined("arguments.see")>,
+                        <cfif arguments.see eq 0>
+                            see = NULL
+                        <cfelse>
+                            see = <cfqueryparam value="#arguments.see#" cfsqltype="cf_sql_integer">
                         </cfif>
-                    </cfloop>
-                </cfif>
-                <cfif isdefined("form") and not(structisempty(form))>
-                <p><strong>Form variables:</strong></p>
-                    <cfloop collection="#form#" item="key">
-                    	<cfif lcase(key) neq 'password'>
-                            #key#: #StructFind(form, key)#<br/>
+                    </cfif>
+                    <cfif isdefined("arguments.suppress_approval")>,
+                        <cfif arguments.suppress_approval eq 'yes'>
+                            suppress_approval = 'yes'
+                        <cfelse>
+                            suppress_approval = NULL
                         </cfif>
-                    </cfloop>
-                </cfif>
-                <cfif isdefined("url") and not(structisempty(url))>
-                Query string:
-                	<cfdump var="#url#">
-                </cfif>
-                Detail:
-                <cfdump var="#arguments.detail#">
-            </cfoutput>
-        </cfmail>
+                    </cfif>
+                WHERE
+                    ID = <cfqueryparam value="#arguments.ID#" cfsqltype="cf_sql_integer">
+            </cfquery>
+            
+            <cfreturn true>
+            
+            <cfcatch>
+                <cfreturn cfcatch>
+            </cfcatch>
+        </cftry>
     </cffunction>
 </cfcomponent>
