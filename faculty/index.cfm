@@ -28,24 +28,16 @@ This file is part of the HWS Weeding Manager.
 	<cfset title = "Collection Review">
     <cfinclude template = "../config.cfm">
 </cfsilent>
-
-<cfinvoke
-	component="#application.display.cfc#"
-    method="display_header"
-    title="#title#"
-    nofollow="yes"
-    jquery="yes"
-    custom_css=".itemdecision {width:180px; margin-left:18px; float:left;}"
-    charset="utf-8"
-/>
+<html>
+<head>
+    <cfinclude template = "#application.weeding.home#/includes/header.cfm">
+</head>
 <body>
-    <cfinclude template="/includes/header.cfm">
-    <div id="body">
-        <div id="main">
-    
-    <!-- =========================== column one =========================== --> 
-    
-            <div id="column_full">
+
+<div id="body">
+	<div id="main">
+		<div class="container_16">
+			<div class="grid_12">
             	<cfif isdefined("url.deptid") AND url.deptid neq 0>
                     <cfinvoke
                         component="#application.display.cfc#"
@@ -69,10 +61,6 @@ This file is part of the HWS Weeding Manager.
                     />
                 </cfif>
                 
-                <div style="width:300px; font-size:10px; float:right;">
-                    <cfinclude template="/includes/login.cfm">
-                </div>
-
                 <cftry>
                	    <cfoutput>
                         <h3>#title#</h3>
@@ -133,7 +121,9 @@ This file is part of the HWS Weeding Manager.
             <table style="width:0px;">
             	<tr>
                 	<th>Department</th>
+<!---
                     <th>Liaison</th>
+--->
                     <th colspan="2">Subscription options</th>
                 </tr>
                 <cfloop query="departments">
@@ -153,6 +143,7 @@ This file is part of the HWS Weeding Manager.
                             </cfif>
                             (#bibs.recordcount#)
                         </td>
+<!---
                         <cfinvoke
                         	component="#application.miscellaneous.cfc#"
                             method="get_liaisons_by_deptid"
@@ -166,6 +157,7 @@ This file is part of the HWS Weeding Manager.
                                 </cfloop>
                             </cfif>
                         </td>
+--->
                         <cfinvoke
                         	component="#application.weeding.cfc#"
                             method="is_subscribed"
@@ -198,7 +190,9 @@ This file is part of the HWS Weeding Manager.
                         </cfif>
                         (#bibs.recordcount#)
                     </td>
+<!---
                     <td>&nbsp;</td>
+--->
                     <cfinvoke
                         component="#application.weeding.cfc#"
                         method="is_subscribed"
@@ -223,7 +217,7 @@ This file is part of the HWS Weeding Manager.
 //					window.alert(querystring);
 		
 					$.ajax({
-						url: '/scripts/update.cfm?' + querystring,
+						url: '#application.weeding.home#/scripts/update.cfm?' + querystring,
 						success: function(result) {
 							$("##subscribe_" + deptid).remove();
 							$("##unsubscribe_" + deptid).remove();
@@ -240,7 +234,7 @@ This file is part of the HWS Weeding Manager.
 //					window.alert(querystring);
 		
 					$.ajax({
-						url: '/scripts/update.cfm?' + querystring,
+						url: '#application.weeding.home#/scripts/update.cfm?' + querystring,
 						success: function(result) {
 							$("##subscribe_" + deptid).remove();
 							$("##unsubscribe_" + deptid).remove();
@@ -481,7 +475,7 @@ This file is part of the HWS Weeding Manager.
 //					window.alert(querystring);
 	
                 $("##status_"+bibID)
-                    .load('/scripts/update.cfm', querystring);
+                    .load('#application.weeding.home#/scripts/update.cfm', querystring);
             }
 			
         //-->
@@ -504,15 +498,14 @@ This file is part of the HWS Weeding Manager.
                         </cfoutput>
                     </cfcatch>
                 </cftry>
-
-<!-- =========================== end column one =========================== --> 
-
-</div>
-
-        <cfinvoke
-            component="#application.display.cfc#"
-            method="display_footer"
-        />
-
-    </body>
+            </div>
+            <div class="grid_4">
+                <div style="font-size:10px;">
+                    <cfinclude template="#application.weeding.home#/includes/login.cfm">
+                </div>
+            </div>
+            <div class="clear"></div>
+		<!--- content end   --->
+		</div>
+</body>
 </html>

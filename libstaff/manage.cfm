@@ -602,7 +602,7 @@ This file is part of the HWS Weeding Manager.
 
             function addComment(bibID) {
                 $("##bib_"+bibID+"_comment_#session.authorization.IID#_status").html("Updating...");
-                sendURL = "/scripts/get.cfm?component=weeding&method=add_item_comment&bib_ID=" + bibID + "&comment=" + $("##bib_"+bibID+"_comment_#session.authorization.IID#_textarea").val();
+                sendURL = "#application.weeding.home#/scripts/get.cfm?component=weeding&method=add_item_comment&bib_ID=" + bibID + "&comment=" + $("##bib_"+bibID+"_comment_#session.authorization.IID#_textarea").val();
 //                window.alert(sendURL);
                 $.ajax({
                     url: sendURL,
@@ -615,7 +615,7 @@ This file is part of the HWS Weeding Manager.
 
             function acknowledge(bibID, facultyID) {
                 $("##bib_"+bibID+"_comment_"+facultyID+"_status").html("Updating...");
-                sendURL = "/scripts/get.cfm?component=weeding&method=acknowledge&bib_ID=" + bibID + "&faculty_ID=" + facultyID;
+                sendURL = "#application.weeding.home#/scripts/get.cfm?component=weeding&method=acknowledge&bib_ID=" + bibID + "&faculty_ID=" + facultyID;
 //                window.alert(sendURL);
                 $.ajax({
                     url: sendURL,

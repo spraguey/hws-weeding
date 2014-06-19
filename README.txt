@@ -19,6 +19,12 @@ Copyright 2014 Hobart & William Smith Colleges
 
 Release notes
 
+6/19/14
+
+* Added missing table definition for weeding_department_subscription
+* Fixed broken references in the Faculty portal
+* Fixed broken /scripts path in manage.cfm and weeding.cfc
+
 6/18/14
 
 * Added SQL definitions for missing tables, including insert statement to

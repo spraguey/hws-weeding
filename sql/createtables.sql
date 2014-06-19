@@ -1,12 +1,12 @@
 USE [library]
 GO
-/****** Object:  Table [dbo].[weeding_bib]    Script Date: 04/29/2014 21:21:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_PADDING ON
 GO
+/****** Object:  Table [dbo].[weeding_bib]    Script Date: 04/29/2014 21:21:26 ******/
 CREATE TABLE [dbo].[weeding_bib](
 	[bib_ID] [bigint] NOT NULL,
 	[librarian_ID] [int] NOT NULL,
@@ -29,17 +29,8 @@ CREATE TABLE [dbo].[weeding_bib](
 ) ON [PRIMARY]
 
 GO
-SET ANSI_PADDING OFF
 
-USE [library]
-GO
 /****** Object:  Table [dbo].[weeding_bib_comment]    Script Date: 04/29/2014 21:22:52 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
 CREATE TABLE [dbo].[weeding_bib_comment](
 	[item_barcode] [varchar](50) NULL,
 	[faculty_ID] [int] NOT NULL,
@@ -51,29 +42,16 @@ CREATE TABLE [dbo].[weeding_bib_comment](
 ) ON [PRIMARY]
 
 GO
-SET ANSI_PADDING OFF
 
-USE [library]
-GO
 /****** Object:  Table [dbo].[weeding_bib_department]    Script Date: 04/29/2014 21:23:27 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[weeding_bib_department](
 	[bib_ID] [int] NOT NULL,
 	[department_ID] [int] NOT NULL
 ) ON [PRIMARY]
 
-USE [library]
 GO
+
 /****** Object:  Table [dbo].[weeding_item]    Script Date: 04/29/2014 21:24:04 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
 CREATE TABLE [dbo].[weeding_item](
 	[item_barcode] [varchar](50) NOT NULL,
 	[librarian_ID] [int] NOT NULL,
@@ -96,22 +74,8 @@ CREATE TABLE [dbo].[weeding_item](
 ) ON [PRIMARY]
 
 GO
-SET ANSI_PADDING OFF
 
-GO
-
-USE [library]
-GO
 /****** Object:  Table [dbo].[department]    Script Date: 6/17/2014 10:02:00 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
 CREATE TABLE [dbo].[department](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[name] [varchar](100) NULL,
@@ -125,19 +89,7 @@ CREATE TABLE [dbo].[department](
 
 GO
 
-SET ANSI_PADDING OFF
-GO
-
-
-USE [library]
-GO
 /****** Object:  Table [dbo].[requestor_department]    Script Date: 6/17/2014 10:02:57 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[requestor_department](
 	[requestor_ID] [int] NOT NULL,
 	[department_ID] [int] NULL
@@ -145,23 +97,7 @@ CREATE TABLE [dbo].[requestor_department](
 
 GO
 
-
-USE [library]
-GO
-
-USE [library]
-GO
-
 /****** Object:  Table [dbo].[user]    Script Date: 6/17/2014 10:03:45 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
 CREATE TABLE [dbo].[user](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[firstname] [varchar](50) NULL,
@@ -188,20 +124,7 @@ CREATE TABLE [dbo].[user](
 
 GO
 
-SET ANSI_PADDING OFF
-GO
-
-
-USE [library]
-GO
-
 /****** Object:  Table [dbo].[user_permission]    Script Date: 6/17/2014 10:04:03 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[user_permission](
 	[user_ID] [int] NOT NULL,
 	[permission_ID] [int] NOT NULL
@@ -209,20 +132,7 @@ CREATE TABLE [dbo].[user_permission](
 
 GO
 
-
-USE [library]
-GO
-
 /****** Object:  Table [dbo].[library_department]    Script Date: 6/17/2014 10:19:22 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
 CREATE TABLE [dbo].[library_department](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[name] [varchar](50) NULL,
@@ -238,23 +148,7 @@ CREATE TABLE [dbo].[library_department](
 
 GO
 
-SET ANSI_PADDING OFF
-GO
-
-
-USE [library]
-GO
-
 /****** Object:  Table [dbo].[permission]    Script Date: 6/17/2014 10:22:53 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
 CREATE TABLE [dbo].[permission](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[description] [varchar](50) NULL,
@@ -266,11 +160,15 @@ CREATE TABLE [dbo].[permission](
 
 GO
 
-SET ANSI_PADDING OFF
-GO
-
-
 INSERT INTO [dbo].[permission]
     ([description])
 SELECT 'Liaison' UNION ALL SELECT 'Cataloging' UNION ALL SELECT 'Archives'
+GO
+
+/****** Object:  Table [dbo].[weeding_department_subscription]    Script Date: 6/19/2014 10:59:41 AM ******/
+CREATE TABLE [dbo].[weeding_department_subscription](
+	[faculty_ID] [int] NULL,
+	[department_ID] [int] NULL
+) ON [PRIMARY]
+
 GO

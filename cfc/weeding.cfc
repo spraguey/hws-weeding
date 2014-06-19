@@ -969,12 +969,12 @@ This file is part of the HWS Weeding Manager.
                                         </cfif>
                                         <cfif has_comment eq "no" and (isdefined("session.authorization.admin") or isdefined("session.authorization.liaison"))>
                                             <p id="s_add_faculty_comment_#arguments.bib_ID#" style="float:left; width:300px;">
-                                                <a class="link" onclick="swap('_add_faculty_comment_#arguments.bib_ID#', 1)">Add internal comment</a>
+                                                <a class="link" onclick="$('##s_add_faculty_comment_#arguments.bib_ID#').hide();$('##l_add_faculty_comment_#arguments.bib_ID#').show();">Add internal comment</a>
                                             </p>
                                             <p id="l_add_faculty_comment_#arguments.bib_ID#" style="float:left; width:300px; display:none;">
                                                 <textarea id="bib_#arguments.bib_ID#_comment_#session.authorization.IID#_textarea" rows="5" cols="35"></textarea>
                                                 <a class="link" onclick="addComment(#arguments.bib_ID#);">Add</a> |
-                                                <a class="link" onclick="swap('_add_faculty_comment_#arguments.bib_ID#', 0)">Cancel</a>
+                                                <a class="link" onclick="$('##s_add_faculty_comment_#arguments.bib_ID#').show();$('##l_add_faculty_comment_#arguments.bib_ID#').hide();">Cancel</a>
                                                 <span id="bib_#arguments.bib_ID#_comment_#session.authorization.IID#_status">&nbsp;</span>
                                             </p>
                                         </cfif>
