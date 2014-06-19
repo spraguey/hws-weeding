@@ -24,6 +24,7 @@ Release notes
 * Added missing table definition for weeding_department_subscription
 * Fixed broken references in the Faculty portal
 * Fixed broken /scripts path in manage.cfm and weeding.cfc
+* Fixed bug related to Admin user acting as faculty
 
 6/18/14
 

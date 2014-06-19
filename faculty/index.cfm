@@ -68,7 +68,7 @@ This file is part of the HWS Weeding Manager.
                             <cfthrow message="You must log in to view reports.">
                         </cfif>
 
-						<cfif not(isdefined("session.user.faculty"))>
+						<cfif not(isdefined("session.user.faculty") or isdefined("session.authorization.admin"))>
                             <cfthrow
                                 message="This tool is only available to faculty.">
                         </cfif>

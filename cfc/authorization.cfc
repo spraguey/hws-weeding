@@ -436,6 +436,7 @@ This file is part of the HWS Weeding Manager.
                 <cfset session.authorization = {}>
                 <cfset session.authorization.authorized = 'yes'>
                 <cfset session.authorization.admin = 'yes'>
+                <cfset session.authorization.iid = 0>
                 <cfset session.authorization.userid = 0>
             </cfif>
             

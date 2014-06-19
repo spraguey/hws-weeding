@@ -778,6 +778,15 @@ This file is part of the HWS Weeding Manager.
             </cfif>
 --->
             <cfset patron = StructNew()>
+            <cfif isdefined("application.adminpw") and isdefined("arguments.iid") and arguments.iid eq 0>
+                <cfset patron.iid = 0>
+                <cfset patron.firstname = 'Admin'>
+                <cfset patron.lastname = 'User'>
+                <cfset patron.email_address = 'n/a'>
+                <cfset patron.status = 'n/a'>
+                <cfreturn patron>
+            </cfif>
+            
             <cfif isdefined("arguments.iid") and len(arguments.iid) lt 8> <!--- suid --->
                 <cfquery name="getPatron" datasource="#application.dsn.library#">
                     SELECT
