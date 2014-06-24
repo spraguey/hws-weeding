@@ -548,7 +548,7 @@ This file is part of the HWS Weeding Manager.
 
             <cfquery name="updateUser" datasource="#application.dsn.library_rw#">
                 UPDATE
-                    user
+                    [user]
                 SET
                     <cfloop collection="#arguments#" item="key">
                         <cfif key neq "ID" AND key neq "url" AND isdefined("arguments.#key#")>

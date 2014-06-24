@@ -84,32 +84,10 @@ This file is part of the HWS Weeding Manager.
                     </cfif>
                     
                     <cfif isdefined("session.authorization.admin")>
-                        <p><strong>Department:</strong>
-                            <cfinvoke
-                                component="cfc.miscellaneous"
-                                method="get_library_department"
-                                returnvariable="departments"
-                            />
-                            <select id="library_department" onChange="update_department();">
-                                <option value=''>None</option>
-                                <cfloop query="departments">
-                                    <cfif departments.ID eq edit_user.library_department_ID>
-                                        <option value="#departments.ID#" selected="selected">#departments.name#</option>
-                                    <cfelse>
-                                        <option value="#departments.ID#">#departments.name#</option>
-                                    </cfif>
-                                </cfloop>
-                            </select>
-                        </p>
-                        <p><strong>Directory order</strong>: <input type="text" size="1" id="directory_order" value="#edit_user.directory_order#"></p>
-                        <p><strong>Title:</strong> <input type="text" id="jobtitle" name="title" value="#edit_user.title#" size="50" maxlength="100"></p>
                         <p><strong>E-mail:</strong> <input type="text" id="email" name="email" value="#edit_user.email#" size="50" maxlength="50"></p>
                     <cfelse>
-                        <p><strong>Department:</strong> #edit_user.library_department#</p>
-                        <p><strong>Title:</strong> #edit_user.title#</p>
                         <p><strong>E-mail:</strong> #edit_user.email#</p>
                     </cfif>
-                    <p><strong>Phone:</strong> <input type="text" id="phone" name="phone" value="#edit_user.phone#" size="50" maxlength="50"></p>
                     
                     <p><strong>Permissions:</strong>
                         <cfinvoke
@@ -194,13 +172,10 @@ This file is part of the HWS Weeding Manager.
                             sendUrl+="&firstname=" + $("##firstname").val();
                             sendUrl+="&lastname=" + $("##lastname").val();
                             sendUrl+="&cwid=" + $("##cwid").val();
-                            sendUrl+="&directory_order=0" + $("##directory_order").val();
-                            sendUrl+="&title=" + $("##jobtitle").val();
                             sendUrl+="&email=" + $("##email").val();
                             $("##admin").is(':checked') ? sendUrl+="&role=admin" : sendUrl+="&role=user";
                             $("##expired").is(':checked') ? sendUrl+="&expired=yes" : sendUrl+="&expired=no";
                         </cfif>
-                        sendUrl+="&phone=" + $("##phone").val();
 //                				window.alert(sendUrl);
                         $.ajax({
                             url: sendUrl,
@@ -240,23 +215,6 @@ This file is part of the HWS Weeding Manager.
                             sendUrl+="&permission_ID=" + pid;
 //									window.alert(sendUrl);
                                 $.ajax({
-                                url: sendUrl,
-                                success: function(result) {
-                                    result = jQuery.trim(result);
-                                    $("##status").html(result);
-                                    if (result == 'Updated') {
-                                        window.location.reload();
-                                    }
-                                }
-                            });
-                        }
-
-                        function update_department(){
-                            $("##status").html("Updating...");
-                            sendUrl="#application.weeding.home#/scripts/update.cfm?component=authorization&method=update_user&ID=#edit_user.ID#";
-                            sendUrl+="&library_department_ID=" + $("##library_department").val();
-//									window.alert(sendUrl);
-                            $.ajax({
                                 url: sendUrl,
                                 success: function(result) {
                                     result = jQuery.trim(result);
@@ -316,24 +274,7 @@ This file is part of the HWS Weeding Manager.
                         <input type="checkbox" id="admin"/>
                     </p>
 
-                    <p><strong>Department:</strong>
-                        <cfinvoke
-                            component="cfc.miscellaneous"
-                            method="get_library_department"
-                            returnvariable="departments"
-                        />
-                        <select id="library_department">
-                            <option value='0'>None</option>
-                            <cfloop query="departments">
-                                <option value="#departments.ID#">#departments.name#</option>
-                            </cfloop>
-                        </select>
-                    </p>
-
-                    <p><strong>Directory order</strong>: <input type="text" size="1" id="directory_order"/></p>
-                    <p><strong>Title:</strong> <input type="text" id="jobtitle" name="title" size="50" maxlength="100"/></p>
                     <p><strong>E-mail:</strong> <input type="text" id="email" name="email" size="50" maxlength="50"/></p>
-                    <p><strong>Phone:</strong> <input type="text" id="phone" name="phone" size="50" maxlength="50"/></p>
                     
                     <p><input type="button" value="Add User" onClick="add_user();"/> <span id="status"></span></p>
                 </div>
@@ -346,11 +287,7 @@ This file is part of the HWS Weeding Manager.
                         sendUrl+="&lastname=" + $("##lastname").val();
                         sendUrl+="&cwid=" + $("##cwid").val();
                         $("##admin").is(':checked') ? sendUrl+="&role=admin" : sendUrl+="&role=user";
-                        sendUrl+="&library_department_ID=" + $("##library_department").val();
-                        sendUrl+="&directory_order=0" + $("##directory_order").val();
-                        sendUrl+="&title=" + $("##jobtitle").val();
                         sendUrl+="&email=" + $("##email").val();
-                        sendUrl+="&phone=" + $("##phone").val();
 //                                    window.alert(sendUrl);
                         $.ajax({
                             url: sendUrl,
