@@ -86,17 +86,17 @@ This file is part of the HWS Weeding Manager.
                     <cfif isdefined("session.authorization.admin")>
                         <p><strong>Department:</strong>
                             <cfinvoke
-                                component="cfc.miscellaneous"
-                                method="get_library_department"
+                                component="#application.miscellaneous.cfc#"
+                                method="get_department_list"
                                 returnvariable="departments"
                             />
                             <select id="library_department" onChange="update_department();">
                                 <option value=''>None</option>
                                 <cfloop query="departments">
                                     <cfif departments.ID eq edit_user.library_department_ID>
-                                        <option value="#departments.ID#" selected="selected">#departments.name#</option>
+                                        <option value="#departments.ID#" selected="selected">#departments.dept#</option>
                                     <cfelse>
-                                        <option value="#departments.ID#">#departments.name#</option>
+                                        <option value="#departments.ID#">#departments.dept#</option>
                                     </cfif>
                                 </cfloop>
                             </select>
@@ -318,14 +318,14 @@ This file is part of the HWS Weeding Manager.
 
                     <p><strong>Department:</strong>
                         <cfinvoke
-                            component="cfc.miscellaneous"
-                            method="get_library_department"
+                            component="#application.miscellaneous.cfc#"
+                            method="get_department_list"
                             returnvariable="departments"
                         />
                         <select id="library_department">
                             <option value='0'>None</option>
                             <cfloop query="departments">
-                                <option value="#departments.ID#">#departments.name#</option>
+                                <option value="#departments.ID#">#departments.dept#</option>
                             </cfloop>
                         </select>
                     </p>
