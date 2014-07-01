@@ -20,7 +20,7 @@ This file is part of the HWS Weeding Manager.
 <cfsetting requesttimeout="3000">
 <cfsilent>
 	<cfset title = "Process Barcodes">
-    <cfinclude template = "config.cfm">
+    <cfinclude template = "../config.cfm">
 </cfsilent>
 <cfinvoke
 	component="#application.display.cfc#"
@@ -30,7 +30,7 @@ This file is part of the HWS Weeding Manager.
     nofollow="yes"
 />
 <body>
-    <cfinclude template="/includes/header.cfm">
+    <cfinclude template="../includes/header.cfm">
     <div id="body">
         <div id="main">
     
@@ -45,7 +45,7 @@ This file is part of the HWS Weeding Manager.
                 />
                 
                 <div style="width:300px; font-size:10px; float:right;">
-                    <cfinclude template="/includes/login.cfm">
+                    <cfinclude template="../includes/login.cfm">
                 </div>
 
 
