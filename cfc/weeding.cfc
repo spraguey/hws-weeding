@@ -313,7 +313,7 @@ This file is part of the HWS Weeding Manager.
             	<cfthrow type="Not authorized">
             </cfif>
         	<cfset arguments.item_barcode = REReplace(arguments.item_barcode, '[^0-9]', '', 'ALL')>
-        	<cfif len(arguments.item_barcode) neq 14>
+        	<cfif len(arguments.item_barcode) neq application.barcodelength>
             	<cfthrow message="Invalid barcode">
             </cfif>
             
