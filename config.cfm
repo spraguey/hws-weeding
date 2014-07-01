@@ -56,6 +56,9 @@ This file is part of the HWS Weeding Manager.
 <cfif not(isdefined("application.dsn.voyager"))>
     <cfset application.dsn.voyager = "voyager">
 </cfif>
+<cfif not(isdefined("application.barcodelength"))>
+    <cfset application.barcodelength = "14">
+</cfif>
 
  <cffunction name="isLoggedIn">
     <!--- DEBUG: bypass login --->
